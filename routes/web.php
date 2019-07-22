@@ -24,4 +24,24 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->prefix('/admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('dashboard');
+
+    Route::group(["prefix" => 'categories'], function () {
+        Route::get('/', 'CategoriesController@index')->name('category.index');
+        Route::post('/', 'CategoriesController@store')->name('category.store');
+        Route::get('/create', 'CategoriesController@create')->name('category.create');
+        Route::get('/{id}/edit', 'CategoriesController@edit')->name('category.edit');
+        Route::patch('/{id}', 'CategoriesController@update')->name('category.update');
+        Route::get('/{id}', 'CategoriesController@show')->name('category.show');
+        Route::delete('/{id}', 'CategoriesController@destroy')->name('category.delete');
+    });
+
+    Route::group(["prefix" => 'tags'], function () {
+        Route::get('/', 'TagsController@index')->name('tag.index');
+        Route::post('/', 'TagsController@store')->name('tag.store');
+        Route::get('/create', 'TagsController@create')->name('tag.create');
+        Route::get('/{id}/edit', 'TagsController@edit')->name('tag.edit');
+        Route::patch('/{id}', 'TagsController@update')->name('tag.update');
+        Route::get('/{id}', 'TagsController@show')->name('tag.show');
+        Route::delete('/{id}', 'TagsController@destroy')->name('tag.delete');
+    });
 });
