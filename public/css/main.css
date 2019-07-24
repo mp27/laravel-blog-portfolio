@@ -1,3 +1,21 @@
 body{
-    background: #333!important;
+    background: #3a3939!important;
+}
+
+body, html, #app, #app > div:first-child {
+    height: 100%;
+    width: 100%;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-wrapper {
+    flex: 1;
+}
+
+.bg-dark {
+    background-color: #333!important;
 }

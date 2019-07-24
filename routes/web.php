@@ -44,4 +44,15 @@ Route::middleware(['auth'])->prefix('/admin')->group(function () {
         Route::get('/{id}', 'TagsController@show')->name('tag.show');
         Route::delete('/{id}', 'TagsController@destroy')->name('tag.delete');
     });
+
+
+    Route::group(["prefix" => 'posts'], function () {
+        Route::get('/', 'PostsController@index')->name('post.index');
+        Route::post('/', 'PostsController@store')->name('post.store');
+        Route::get('/create', 'PostsController@create')->name('post.create');
+        Route::get('/{id}/edit', 'PostsController@edit')->name('post.edit');
+        Route::patch('/{id}', 'PostsController@update')->name('post.update');
+        Route::get('/{id}', 'PostsController@show')->name('post.show');
+        Route::delete('/{id}', 'PostsController@destroy')->name('post.delete');
+    });
 });

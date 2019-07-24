@@ -1,0 +1,29 @@
+.sidebar {
+    border-right: 1px solid orange;
+}
+.sidebar ul {
+    list-style-type: none;
+    font-size: 1.4rem;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar ul a {
+    color: #fff;
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+
+
+.sidebar ul li:not(:last-child) a {
+    border-bottom: 1px solid orange;
+}
+
+.sidebar ul a:hover {
+    background: orange;
+}
+
+.admin-navbar {
+    border-bottom: 1px solid orange;
+}

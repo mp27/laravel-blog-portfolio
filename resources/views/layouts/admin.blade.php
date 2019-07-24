@@ -19,10 +19,11 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="admin">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="admin-navbar navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('dashboard') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -68,9 +69,19 @@
             </div>
         </nav>
 
-        <div class="d-flex">
-            <div class="sidebar bg-dark text-white py-5 px-3 w-25">
-                <h1>TEST</h1>
+        <div class="d-flex app-wrapper">
+            <div class="sidebar bg-dark text-white w-25">
+                <ul>
+                    <li>
+                        <a href="{{route('category.index')}}">Categories</a>
+                    </li>
+                    <li>
+                        <a href="{{route('tag.index')}}">Tags</a>
+                    </li>
+                    <li>
+                        <a href="{{route('post.index')}}">Posts</a>
+                    </li>
+                </ul>
             </div>
             <main class="py-4 flex-grow-1">
                 @yield('content')
