@@ -26,6 +26,7 @@
                                         <th>ID</th><td>{{ $post->id }}</td>
                                     </tr>
                                     <tr><th> Title </th><td> {{ $post->title }} </td></tr><tr><th> Content </th><td> {{ $post->content }} </td></tr><tr><th> Slug </th><td> {{ $post->slug }} </td></tr>
+                                    <tr><th> Category </th><td> {{ $post->category->name}} </td></tr>
                                 </tbody>
                             </table>
                         </div>

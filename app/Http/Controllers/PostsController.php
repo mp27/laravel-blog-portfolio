@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -21,9 +22,9 @@ class PostsController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $posts = Post::latest()->paginate($perPage);
+            $posts = Post::latest()->with('category')->paginate($perPage);
         } else {
-            $posts = Post::latest()->paginate($perPage);
+            $posts = Post::latest()->with('category')->paginate($perPage);
         }
 
         return view('admin.posts.index', compact('posts'));
@@ -36,7 +37,11 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::all();
+
+        return view('admin.posts.create')->with([
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -80,8 +85,11 @@ class PostsController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
+        $categories = Category::all();
 
-        return view('admin.posts.edit', compact('post'));
+        return view('admin.posts.edit', compact('post'))->with([
+            "categories" => $categories
+        ]);
     }
 
     /**
