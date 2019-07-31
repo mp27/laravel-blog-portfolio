@@ -35,7 +35,7 @@
                                 @foreach($posts as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->title }}</td><td>{{ $item->content }}</td><td>{{ $item->slug }}</td>
+                                        <td>{{ $item->title }}</td><td>{!! substr($item->content, 0, 100) !!}...</td><td>{{ $item->slug }}</td>
                                         <td>{{!empty($item->category) ? $item->category->name:''}}</td>
                                         <td>
                                             <a href="{{ url('/admin/posts/' . $item->id) }}" title="View post"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
