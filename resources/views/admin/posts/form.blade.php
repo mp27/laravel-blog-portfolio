@@ -27,10 +27,20 @@
             <label for="category_id" class="control-label">{{ 'Category' }}</label>
             <select name="category_id" id="category_id" class="form-control">
                 @foreach($categories as $category)
-                    <option value="{{$category->id}}">{{$category->name}}</option>
+                    <option value="{{$category->id}}" @if(!empty($post) && $category->id == $post->category_id) selected @endif>{{$category->name}}</option>
                 @endforeach
             </select>
 {{--            <input class="form-control" name="category_id" type="number" id="category_id" value="{{ isset($post->category_id) ? $post->category_id : ''}}" >--}}
+            {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
+        </div>
+        <div class="form-group {{ $errors->has('tags') ? 'has-error' : ''}}">
+            <label for="tags" class="control-label">{{ 'Tags' }}</label>
+            <select name="tags[]" id="tags" class="form-control" multiple>
+                @foreach($tags as $tag)
+                    <option value="{{$tag->id}}" @if(!empty($post) && in_array($tag->id, $post->tags->pluck('id')->toArray())) selected @endif>{{$tag->name}}</option>
+                @endforeach
+            </select>
+            {{--            <input class="form-control" name="category_id" type="number" id="category_id" value="{{ isset($post->category_id) ? $post->category_id : ''}}" >--}}
             {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
         </div>
     </div>

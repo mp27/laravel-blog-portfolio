@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
+use App\Http\Requests\StorePostRequest;
 use App\Post;
+use App\Tag;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class PostsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index(Request $request)
     {
@@ -33,30 +35,32 @@ class PostsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
         return view('admin.posts.create')->with([
-            'categories' => $categories
+            'categories' => $categories,
+            'tags' => $tags
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-
         $requestData = $request->all();
 
-        Post::create($requestData);
+        $post = Post::create($requestData);
+        $post->tags()->sync($request->tags);
 
         return redirect('admin/posts')->with('flash_message', 'Post added!');
     }
@@ -64,9 +68,9 @@ class PostsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function show($id)
     {
@@ -78,35 +82,37 @@ class PostsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function edit($id)
     {
         $post = Post::findOrFail($id);
         $categories = Category::all();
+        $tags = Tag::all();
 
         return view('admin.posts.edit', compact('post'))->with([
-            "categories" => $categories
+            "categories" => $categories,
+            "tags" => $tags
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
-    public function update(Request $request, $id)
+    public function update(StorePostRequest $request, $id)
     {
-
         $requestData = $request->all();
 
         $post = Post::findOrFail($id);
         $post->update($requestData);
+        $post->tags()->sync($request->tags);
 
         return redirect('admin/posts')->with('flash_message', 'Post updated!');
     }
@@ -114,9 +120,9 @@ class PostsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function destroy($id)
     {
