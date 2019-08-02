@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
+use App\Http\Requests\TagRequest;
 use App\Tag;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class TagsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index(Request $request)
     {
@@ -32,7 +33,7 @@ class TagsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -42,15 +43,15 @@ class TagsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(TagRequest $request)
     {
-        
+
         $requestData = $request->all();
-        
+
         Tag::create($requestData);
 
         return redirect('admin/tags')->with('flash_message', 'Tag added!');
@@ -59,9 +60,9 @@ class TagsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function show($id)
     {
@@ -73,9 +74,9 @@ class TagsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function edit($id)
     {
@@ -87,16 +88,16 @@ class TagsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
-    public function update(Request $request, $id)
+    public function update(TagRequest $request, $id)
     {
-        
+
         $requestData = $request->all();
-        
+
         $tag = Tag::findOrFail($id);
         $tag->update($requestData);
 
@@ -106,9 +107,9 @@ class TagsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function destroy($id)
     {

@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Category;
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -46,7 +47,7 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $requestData = $request->all();
 
@@ -91,7 +92,7 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
 
         $requestData = $request->all();
