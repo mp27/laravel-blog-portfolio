@@ -11,9 +11,11 @@
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
 
-                        <form method="GET" action="{{ url('/admin/posts') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+                        <form method="GET" action="{{ url('/admin/posts') }}" accept-charset="UTF-8"
+                              class="form-inline my-2 my-lg-0 float-right" role="search">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
+                                <input type="text" class="form-control" name="search" placeholder="Search..."
+                                       value="{{ request('search') }}">
                                 <span class="input-group-append">
                                     <button class="btn btn-secondary" type="submit">
                                         <i class="fa fa-search"></i>
@@ -27,31 +29,50 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
-                                    <tr>
-                                        <th>#</th><th>Title</th><th>Content</th><th>Slug</th><th>Category</th><th>Actions</th>
-                                    </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Slug</th>
+                                    <th>Category</th>
+                                    <th>Actions</th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($posts as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->title }}</td><td>{!! substr($item->content, 0, 100) !!}...</td><td>{{ $item->slug }}</td>
+                                        <td>{{ $item->title }}</td>
+                                        <td>{{ $item->slug }}</td>
                                         <td>{{!empty($item->category) ? $item->category->name:''}}</td>
                                         <td>
-                                            <a href="{{ url('/admin/posts/' . $item->id) }}" title="View post"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
-                                            <a href="{{ url('/admin/posts/' . $item->id . '/edit') }}" title="Edit post"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                                            <a href="{{ url('/admin/posts/' . $item->id) }}" title="View post">
+                                                <button class="btn btn-info btn-sm"><i class="fa fa-eye"
+                                                                                       aria-hidden="true"></i> View
+                                                </button>
+                                            </a>
+                                            <a href="{{ url('/admin/posts/' . $item->id . '/edit') }}"
+                                               title="Edit post">
+                                                <button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"
+                                                                                          aria-hidden="true"></i> Edit
+                                                </button>
+                                            </a>
 
-                                            <form method="POST" action="{{ url('/admin/posts' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                            <form method="POST" action="{{ url('/admin/posts' . '/' . $item->id) }}"
+                                                  accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete post" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete post"
+                                                        onclick="return confirm(&quot;Confirm; delete?;&quot;)"><i
+                                                        class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $posts->appends(['search' => Request::get('search')])->render() !!} </div>
+                            <div
+                                class="pagination-wrapper"> {!! $posts->appends(['search' => Request::get('search')])->render() !!} </div>
                         </div>
 
                     </div>
