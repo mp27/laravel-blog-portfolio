@@ -57,6 +57,12 @@
             {{--            <input class="form-control" name="category_id" type="number" id="category_id" value="{{ isset($post->category_id) ? $post->category_id : ''}}" >--}}
             {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
         </div>
+
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="published" value="true" @if(!empty($post) && $post->published) checked @endif name="published">
+            <label class="custom-control-label" for="published">Public</label>
+        </div>
+
     </div>
     <div class="tab-pane fade" id="seo" role="tabpanel" aria-labelledby="profile-tab">
 

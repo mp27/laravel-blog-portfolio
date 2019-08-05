@@ -9,7 +9,11 @@ class Post extends Model
 {
     protected $table = 'posts';
 
-    protected $fillable = ['title', 'content', 'slug', 'keywords', 'description', 'category_id'];
+    protected $fillable = ['title', 'content', 'slug', 'keywords', 'description', 'category_id', 'published'];
+
+    protected $casts = [
+        'published' => 'boolean'
+    ];
 
     public function category()
     {

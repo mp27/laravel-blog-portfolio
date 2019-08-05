@@ -109,6 +109,11 @@ class PostsController extends Controller
     public function update(StorePostRequest $request, $id)
     {
         $requestData = $request->all();
+        $requestData['published'] = false;
+
+        if ($request->published) {
+            $requestData['published'] = true;
+        }
 
         $post = Post::findOrFail($id);
         $post->update($requestData);
