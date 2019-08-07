@@ -9,6 +9,7 @@ use App\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Intervention\Image\Facades\Image;
 
@@ -60,10 +61,26 @@ class PostsController extends Controller
     {
         $requestData = $request->all();
 
+        if ($request->hasFile('thumbnail')) {
+            $title = Str::slug($requestData['title'], '-');
+            $requestData['thumbnail'] = $this->createThumbnail($request->file('thumbnail'), $title);
+        }
+
         $post = Post::create($requestData);
         $post->tags()->sync($request->tags);
 
         return redirect('admin/posts')->with('flash_message', 'Post added!');
+    }
+
+    public function createThumbnail($file, $title)
+    {
+        $fileName = "thumbnails/{$title}.{$file->getClientOriginalExtension()}";
+
+        Image::make($file)->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($fileName);
+
+        return $fileName;
     }
 
     /**
@@ -117,11 +134,8 @@ class PostsController extends Controller
         }
 
         if ($request->hasFile('thumbnail')) {
-            $fileName = "thumbnails/{$requestData['title']}.{$request->file('thumbnail')->getClientOriginalExtension()}";
-            $imagePathSaved = Image::make($request->file('thumbnail'))->resize(300, null, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($fileName);
-            $requestData['thumbnail'] = $fileName;
+            $title = Str::slug($requestData['title'], '-');
+            $requestData['thumbnail'] = $this->createThumbnail($request->file('thumbnail'), $title);
         }
 
         $post = Post::findOrFail($id);

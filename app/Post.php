@@ -33,6 +33,6 @@ class Post extends Model
             $slug = $this->attributes['title'];
         }
 
-        $this->attributes['slug'] = Str::slug($slug, '-');
+        $this->attributes['slug'] = Str::slug($slug, '-') . '-' . Str::random(10);
     }
 }

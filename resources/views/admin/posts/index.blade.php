@@ -31,6 +31,7 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Thumbnail</th>
                                     <th>Title</th>
                                     <th>Slug</th>
                                     <th>Category</th>
@@ -41,6 +42,11 @@
                                 @foreach($posts as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            @if(!empty($item->thumbnail))
+                                                <img width="150" src="{{asset($item->thumbnail)}}" alt="thumbnail">
+                                            @endif
+                                        </td>
                                         <td>{{ $item->title }}</td>
                                         <td>{{ $item->slug }}</td>
                                         <td>{{!empty($item->category) ? $item->category->name:''}}</td>
