@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
+use Intervention\Image\Facades\Image;
 
 class PostsController extends Controller
 {
@@ -113,6 +114,14 @@ class PostsController extends Controller
 
         if ($request->published) {
             $requestData['published'] = true;
+        }
+
+        if ($request->hasFile('thumbnail')) {
+            $fileName = "thumbnails/{$requestData['title']}.{$request->file('thumbnail')->getClientOriginalExtension()}";
+            $imagePathSaved = Image::make($request->file('thumbnail'))->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($fileName);
+            $requestData['thumbnail'] = $fileName;
         }
 
         $post = Post::findOrFail($id);

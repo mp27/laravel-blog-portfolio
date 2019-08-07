@@ -63,7 +63,13 @@
             <label class="custom-control-label" for="published">Public</label>
         </div>
 
+        <div class="custom-file mt-3">
+            <input type="file" name="thumbnail" class="custom-file-input" id="thumbnail-input">
+            <label class="custom-file-label" for="thumbnail-input">Choose thumbnail</label>
+        </div>
+
     </div>
+
     <div class="tab-pane fade" id="seo" role="tabpanel" aria-labelledby="profile-tab">
 
         <div class="form-group {{ $errors->has('keywords') ? 'has-error' : ''}}">
