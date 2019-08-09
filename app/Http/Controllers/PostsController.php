@@ -2,19 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Posts\DeletePostAction;
+use App\Actions\Posts\FetchPostAction;
+use App\Actions\Posts\GetAllPostsAction;
+use App\Actions\Posts\StorePostAction;
+use App\Actions\Posts\UpdatePostAction;
 use App\Category;
 use App\Http\Requests\StorePostRequest;
-use App\Post;
 use App\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Intervention\Image\Facades\Image;
 
 class PostsController extends Controller
 {
+    protected $getAllPostsAction;
+    protected $storePostAction;
+    protected $fetchPostAction;
+    protected $updatePostAction;
+    protected $deletePostAction;
+
+    public function __construct(GetAllPostsAction $getAllPostsAction,
+                                StorePostAction $storePostAction,
+                                FetchPostAction $fetchPostAction,
+                                UpdatePostAction $updatePostAction,
+                                DeletePostAction $deletePostAction)
+    {
+        $this->getAllPostsAction = $getAllPostsAction;
+        $this->storePostAction = $storePostAction;
+        $this->fetchPostAction = $fetchPostAction;
+        $this->updatePostAction = $updatePostAction;
+        $this->deletePostAction = $deletePostAction;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,14 +43,7 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
-        $perPage = 25;
-
-        if (!empty($keyword)) {
-            $posts = Post::latest()->with('category')->paginate($perPage);
-        } else {
-            $posts = Post::latest()->with('category')->paginate($perPage);
-        }
+        $posts = $this->getAllPostsAction->run($request);
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -59,28 +73,9 @@ class PostsController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $requestData = $request->all();
-
-        if ($request->hasFile('thumbnail')) {
-            $title = Str::slug($requestData['title'], '-');
-            $requestData['thumbnail'] = $this->createThumbnail($request->file('thumbnail'), $title);
-        }
-
-        $post = Post::create($requestData);
-        $post->tags()->sync($request->tags);
+        $this->storePostAction->run($request);
 
         return redirect('admin/posts')->with('flash_message', 'Post added!');
-    }
-
-    public function createThumbnail($file, $title)
-    {
-        $fileName = "thumbnails/{$title}.{$file->getClientOriginalExtension()}";
-
-        Image::make($file)->resize(300, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($fileName);
-
-        return $fileName;
     }
 
     /**
@@ -92,7 +87,7 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->fetchPostAction->run($id);
 
         return view('admin.posts.show', compact('post'));
     }
@@ -106,7 +101,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->fetchPostAction->run($id);
         $categories = Category::all();
         $tags = Tag::all();
 
@@ -126,21 +121,7 @@ class PostsController extends Controller
      */
     public function update(StorePostRequest $request, $id)
     {
-        $requestData = $request->all();
-        $requestData['published'] = false;
-
-        if ($request->published) {
-            $requestData['published'] = true;
-        }
-
-        if ($request->hasFile('thumbnail')) {
-            $title = Str::slug($requestData['title'], '-');
-            $requestData['thumbnail'] = $this->createThumbnail($request->file('thumbnail'), $title);
-        }
-
-        $post = Post::findOrFail($id);
-        $post->update($requestData);
-        $post->tags()->sync($request->tags);
+        $this->updatePostAction->run($request, $id);
 
         return redirect('admin/posts')->with('flash_message', 'Post updated!');
     }
@@ -154,7 +135,7 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        Post::destroy($id);
+        $this->deletePostAction->run($id);
 
         return redirect('admin/posts')->with('flash_message', 'Post deleted!');
     }
