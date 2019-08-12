@@ -2,30 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
-use App\Category;
+use App\Actions\Categories\DeleteCategoryAction;
+use App\Actions\Categories\FetchCategoryAction;
+use App\Actions\Categories\GetPaginatedCategoriesAction;
+use App\Actions\Categories\StoreCategoryAction;
+use App\Actions\Categories\UpdateCategoryAction;
 use App\Http\Requests\CategoryRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class CategoriesController extends Controller
 {
+    protected $getPaginatedCategoriesAction;
+    protected $storeCategoryAction;
+    protected $fetchCategoryAction;
+    protected $updateCategoryAction;
+    protected $deleteCategoryAction;
+
+    public function __construct(GetPaginatedCategoriesAction $getPaginatedCategoriesAction,
+                                StoreCategoryAction $storeCategoryAction,
+                                FetchCategoryAction $fetchCategoryAction,
+                                UpdateCategoryAction $updateCategoryAction,
+                                DeleteCategoryAction $deleteCategoryAction)
+    {
+        $this->getPaginatedCategoriesAction = $getPaginatedCategoriesAction;
+        $this->storeCategoryAction = $storeCategoryAction;
+        $this->fetchCategoryAction = $fetchCategoryAction;
+        $this->updateCategoryAction = $updateCategoryAction;
+        $this->deleteCategoryAction = $deleteCategoryAction;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
-        $perPage = 25;
-
-        if (!empty($keyword)) {
-            $categories = Category::latest()->paginate($perPage);
-        } else {
-            $categories = Category::latest()->paginate($perPage);
-        }
+        $categories = $this->getPaginatedCategoriesAction->run($request);
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -33,7 +49,7 @@ class CategoriesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -43,15 +59,13 @@ class CategoriesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function store(CategoryRequest $request)
     {
-        $requestData = $request->all();
-
-        Category::create($requestData);
+        $this->storeCategoryAction->run($request->all());
 
         return redirect('admin/categories')->with('flash_message', 'Category added!');
     }
@@ -59,13 +73,13 @@ class CategoriesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function show($id)
     {
-        $category = Category::findOrFail($id);
+        $category = $this->fetchCategoryAction->run($id);
 
         return view('admin.categories.show', compact('category'));
     }
@@ -73,13 +87,13 @@ class CategoriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
+        $category = $this->fetchCategoryAction->run($id);
 
         return view('admin.categories.edit', compact('category'));
     }
@@ -87,18 +101,14 @@ class CategoriesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function update(CategoryRequest $request, $id)
     {
-
-        $requestData = $request->all();
-
-        $category = Category::findOrFail($id);
-        $category->update($requestData);
+        $this->updateCategoryAction->run($request->all(), $id);
 
         return redirect('admin/categories')->with('flash_message', 'Category updated!');
     }
@@ -106,13 +116,13 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function destroy($id)
     {
-        Category::destroy($id);
+        $this->deleteCategoryAction->run($id);
 
         return redirect('admin/categories')->with('flash_message', 'Category deleted!');
     }

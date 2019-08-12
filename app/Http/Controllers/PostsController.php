@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Categories\GetAllCategoriesAction;
 use App\Actions\Posts\DeletePostAction;
 use App\Actions\Posts\FetchPostAction;
 use App\Actions\Posts\GetAllPostsAction;
 use App\Actions\Posts\StorePostAction;
 use App\Actions\Posts\UpdatePostAction;
-use App\Category;
+use App\Actions\Tags\GetAllTagsAction;
 use App\Http\Requests\StorePostRequest;
-use App\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -22,18 +22,24 @@ class PostsController extends Controller
     protected $fetchPostAction;
     protected $updatePostAction;
     protected $deletePostAction;
+    protected $getAllCategoriesAction;
+    protected $getAllTagsAction;
 
     public function __construct(GetAllPostsAction $getAllPostsAction,
                                 StorePostAction $storePostAction,
                                 FetchPostAction $fetchPostAction,
                                 UpdatePostAction $updatePostAction,
-                                DeletePostAction $deletePostAction)
+                                DeletePostAction $deletePostAction,
+                                GetAllCategoriesAction $getAllCategoriesAction,
+                                GetAllTagsAction $getAllTagsAction)
     {
         $this->getAllPostsAction = $getAllPostsAction;
         $this->storePostAction = $storePostAction;
         $this->fetchPostAction = $fetchPostAction;
         $this->updatePostAction = $updatePostAction;
         $this->deletePostAction = $deletePostAction;
+        $this->getAllCategoriesAction = $getAllCategoriesAction;
+        $this->getAllTagsAction = $getAllTagsAction;
     }
 
     /**
@@ -55,8 +61,8 @@ class PostsController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        $tags = Tag::all();
+        $categories = $this->getAllCategoriesAction->run();
+        $tags = $this->getAllTagsAction->run();
 
         return view('admin.posts.create')->with([
             'categories' => $categories,
@@ -102,8 +108,8 @@ class PostsController extends Controller
     public function edit($id)
     {
         $post = $this->fetchPostAction->run($id);
-        $categories = Category::all();
-        $tags = Tag::all();
+        $categories = $this->getAllCategoriesAction->run();
+        $tags = $this->getAllTagsAction->run();
 
         return view('admin.posts.edit', compact('post'))->with([
             "categories" => $categories,
