@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Tags\DeleteTagAction;
+use App\Actions\Tags\FetchTagAction;
+use App\Actions\Tags\GetPaginatedTagsAction;
+use App\Actions\Tags\StoreTagAction;
+use App\Actions\Tags\UpdateTagAction;
 use App\Http\Requests\TagRequest;
-use App\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -11,6 +15,25 @@ use Illuminate\View\View;
 
 class TagsController extends Controller
 {
+    protected $getPaginatedTagsAction;
+    protected $storeTagAction;
+    protected $fetchTagAction;
+    protected $updateTagAction;
+    protected $deleteTagAction;
+
+    public function __construct(GetPaginatedTagsAction $getPaginatedTagsAction,
+                                StoreTagAction $storeTagAction,
+                                FetchTagAction $fetchTagAction,
+                                UpdateTagAction $updateTagAction,
+                                DeleteTagAction $deleteTagAction)
+    {
+        $this->getPaginatedTagsAction = $getPaginatedTagsAction;
+        $this->storeTagAction = $storeTagAction;
+        $this->fetchTagAction = $fetchTagAction;
+        $this->updateTagAction = $updateTagAction;
+        $this->deleteTagAction = $deleteTagAction;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,14 +41,7 @@ class TagsController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
-        $perPage = 25;
-
-        if (!empty($keyword)) {
-            $tags = Tag::latest()->paginate($perPage);
-        } else {
-            $tags = Tag::latest()->paginate($perPage);
-        }
+        $tags = $this->getPaginatedTagsAction->run($request);
 
         return view('admin.tags.index', compact('tags'));
     }
@@ -50,9 +66,7 @@ class TagsController extends Controller
     public function store(TagRequest $request)
     {
 
-        $requestData = $request->all();
-
-        Tag::create($requestData);
+        $this->storeTagAction->run($request->all());
 
         return redirect('admin/tags')->with('flash_message', 'Tag added!');
     }
@@ -66,7 +80,7 @@ class TagsController extends Controller
      */
     public function show($id)
     {
-        $tag = Tag::findOrFail($id);
+        $tag = $this->fetchTagAction->run($id);
 
         return view('admin.tags.show', compact('tag'));
     }
@@ -80,7 +94,7 @@ class TagsController extends Controller
      */
     public function edit($id)
     {
-        $tag = Tag::findOrFail($id);
+        $tag = $this->fetchTagAction->run($id);
 
         return view('admin.tags.edit', compact('tag'));
     }
@@ -95,11 +109,7 @@ class TagsController extends Controller
      */
     public function update(TagRequest $request, $id)
     {
-
-        $requestData = $request->all();
-
-        $tag = Tag::findOrFail($id);
-        $tag->update($requestData);
+        $this->updateTagAction->run($request->all(), $id);
 
         return redirect('admin/tags')->with('flash_message', 'Tag updated!');
     }
@@ -113,7 +123,7 @@ class TagsController extends Controller
      */
     public function destroy($id)
     {
-        Tag::destroy($id);
+        $this->deleteTagAction->run($id);
 
         return redirect('admin/tags')->with('flash_message', 'Tag deleted!');
     }
