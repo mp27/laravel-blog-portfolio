@@ -25,14 +25,12 @@ class Post extends Model
         return $this->belongsToMany(Tag::class, 'tag_post');
     }
 
-    public function setSlugAttribute($value)
+    public function setSlugAttribute($slug)
     {
-        $slug = $value;
-
         if (empty($slug)) {
             $slug = $this->attributes['title'] . ' ' . Str::random(10);
         }
 
-        $this->attributes['slug'] = Str::slug($slug, '-') ;
+        $this->attributes['slug'] = Str::slug($slug, '-');
     }
 }
