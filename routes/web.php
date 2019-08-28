@@ -21,6 +21,7 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/posts', 'PublicPostsController@index')->name('public.posts');
+Route::get('/posts/{postSlug}', 'PublicPostsController@show')->name('public.post.show');
 
 Route::middleware(['auth'])->prefix('/admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('dashboard');

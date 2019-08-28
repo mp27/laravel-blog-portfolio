@@ -5,15 +5,12 @@
     <div class="row justify-content-center">
         @foreach($posts as $post)
             <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">{{$post->title}}</div>
-                    <div class="card-body">
-                        <p><strong>Category: {{$post->category->name}}</strong></p>
-                        <img src="{{asset($post->thumbnail)}}" alt="{{$post->title}}">
-                    </div>
-                </div>
+               @include('includes.post-thumbnail', ['post' => $post])
             </div>
         @endforeach
+    </div>
+    <div>
+        {{$posts->links()}}
     </div>
 </div>
 @endsection
