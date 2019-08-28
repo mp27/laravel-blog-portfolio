@@ -2,8 +2,16 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <h1>{{$post->title}}</h1>
+        <div class="text-white">
+            <h1 class="text-center">{{$post->title}}</h1>
+            <div class="row">
+                <div class="col-md-8">
+                    {!! $post->content !!}
+                </div>
+                <div class="col-md-4">
+                    Sidebar
+                </div>
+            </div>
         </div>
     </div>
 @endsection
