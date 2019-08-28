@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 //Auth::routes();
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -21,6 +19,8 @@ Route::post('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/posts', 'PublicPostsController@index')->name('public.posts');
 
 Route::middleware(['auth'])->prefix('/admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('dashboard');

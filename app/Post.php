@@ -9,6 +9,8 @@ class Post extends Model
 {
     protected $table = 'posts';
 
+    protected $with = ['category'];
+
     protected $fillable = ['title', 'content', 'slug', 'keywords', 'description', 'category_id', 'published', 'thumbnail'];
 
     protected $casts = [
@@ -25,6 +27,11 @@ class Post extends Model
         return $this->belongsToMany(Tag::class, 'tag_post');
     }
 
+    public function scopePublished($query, $published = true)
+    {
+        return $query->where('published', $published);
+    }
+
     public function setSlugAttribute($slug)
     {
         if (empty($slug)) {
@@ -33,4 +40,5 @@ class Post extends Model
 
         $this->attributes['slug'] = Str::slug($slug, '-');
     }
+
 }
