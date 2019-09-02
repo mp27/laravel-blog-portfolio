@@ -4,21 +4,20 @@
 namespace App\Actions\Files;
 
 
-use Intervention\Image\Facades\Image;
-
 class CreatePostFileAction
 {
-    public function __construct()
+    private $interventionSaveImageAction;
+
+    public function __construct(InterventionSaveImageAction $interventionSaveImageAction)
     {
+        $this->interventionSaveImageAction = $interventionSaveImageAction;
     }
 
     public function run($file, $width = 1280)
     {
         $fileName = "images/{$file->getClientOriginalName()}";
 
-        Image::make($file)->resize($width, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($fileName);
+        $this->interventionSaveImageAction->run($file, $width, $fileName);
 
         return $fileName;
     }
