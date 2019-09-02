@@ -18,7 +18,7 @@
         </div>
         <div class="form-group {{ $errors->has('content') ? 'has-error' : ''}}">
             <label for="content" class="control-label">{{ 'Content' }}</label>
-            <div id="content">
+            <div id="content" data-image-url="{{route('image.store')}}">
                 {!! isset($post->content) ? $post->content : '' !!}
             </div>
             <textarea class="form-control" rows="5" name="content" type="textarea" style="display: none"
@@ -59,7 +59,8 @@
         </div>
 
         <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="published" value="true" @if(!empty($post) && $post->published) checked @endif name="published">
+            <input type="checkbox" class="custom-control-input" id="published" value="true"
+                   @if(!empty($post) && $post->published) checked @endif name="published">
             <label class="custom-control-label" for="published">Public</label>
         </div>
 
@@ -92,20 +93,12 @@
 </div>
 
 @section('styles')
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai-sublime.min.css" />
 @endsection
 
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script>
-        $(document).ready(function () {
-            var quill = new Quill('#content', {
-                theme: 'snow'
-            });
-
-            quill.on('text-change', function (delta, oldDelta, source) {
-                $('#content-textarea').text($(".ql-editor").html());
-            });
-        });
-    </script>
+    <script src="{{asset('js/quill-custom.js')}}"></script>
 @endsection

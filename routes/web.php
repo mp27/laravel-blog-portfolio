@@ -55,5 +55,7 @@ Route::middleware(['auth'])->prefix('/admin')->group(function () {
         Route::patch('/{id}', 'PostsController@update')->name('post.update');
         Route::get('/{id}', 'PostsController@show')->name('post.show');
         Route::delete('/{id}', 'PostsController@destroy')->name('post.delete');
+
+        Route::post('/post-upload-image', 'PostImageController@store')->name('image.store');
     });
 });
