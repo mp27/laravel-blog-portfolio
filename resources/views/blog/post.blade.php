@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@section("meta")
+    <meta name="description" content="{{$post->description}}">
+    <meta name="keywords" content="{{$post->keywords}}">
+@endsection
+
 @section('content')
     <div class="container">
         <div class="text-white">
