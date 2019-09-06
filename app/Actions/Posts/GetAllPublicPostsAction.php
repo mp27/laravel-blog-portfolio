@@ -13,9 +13,9 @@ class GetAllPublicPostsAction
     {
     }
 
-    public function run(Request $request, $perPage = 25)
+    public function run(Request $request, $perPage = 10)
     {
-        return Post::latest()->published()->paginate($perPage);
+        return Post::search($request->search)->paginate($perPage);
     }
 
 }

@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
+    use Searchable;
+
     protected $table = 'posts';
 
     protected $with = ['category'];
@@ -41,4 +44,16 @@ class Post extends Model
         $this->attributes['slug'] = Str::slug($slug, '-');
     }
 
+    public function shouldBeSearchable()
+    {
+        return $this->published;
+    }
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+        $array['category'] = $this->category['name'];
+
+        return $array;
+    }
 }
