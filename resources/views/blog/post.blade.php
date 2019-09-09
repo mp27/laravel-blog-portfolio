@@ -14,7 +14,9 @@
                     {!! $post->content !!}
                 </div>
                 <div class="col-md-4">
-                    Sidebar
+                    @foreach($similarPosts as $similarPost)
+                        @include("includes.post-thumbnail", ['post' => $similarPost])
+                    @endforeach
                 </div>
             </div>
         </div>

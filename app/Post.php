@@ -53,6 +53,7 @@ class Post extends Model
     {
         $array = $this->toArray();
         $array['category'] = $this->category['name'];
+        $array['tags'] = array_column($this->tags()->get()->toArray(), 'name');
 
         return $array;
     }
