@@ -58,4 +58,14 @@ Route::middleware(['auth'])->prefix('/admin')->group(function () {
 
         Route::post('/post-upload-image', 'PostImageController@store')->name('image.store');
     });
+
+    Route::group(["prefix" => 'projects'], function () {
+        Route::get('/', 'ProjectsController@index')->name('project.index');
+        Route::post('/', 'ProjectsController@store')->name('project.store');
+        Route::get('/create', 'ProjectsController@create')->name('project.create');
+        Route::get('/{id}/edit', 'ProjectsController@edit')->name('project.edit');
+        Route::patch('/{id}', 'ProjectsController@update')->name('project.update');
+        Route::get('/{id}', 'ProjectsController@show')->name('project.show');
+        Route::delete('/{id}', 'ProjectsController@destroy')->name('project.delete');
+    });
 });
