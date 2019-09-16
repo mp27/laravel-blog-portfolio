@@ -7,6 +7,8 @@ use App\Actions\Projects\FetchProjectAction;
 use App\Actions\Projects\GetPaginatedProjectsAction;
 use App\Actions\Projects\StoreProjectAction;
 use App\Actions\Projects\UpdateProjectAction;
+use App\Actions\Tags\GetAllTagsAction;
+use App\Http\Requests\ProjectRequest;
 use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
@@ -25,26 +27,29 @@ class ProjectsController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(GetAllTagsAction $getAllTagsAction)
     {
-        return view('admin.projects.create');
+        return view('admin.projects.create')->with([
+            "tags" => $getAllTagsAction->run()
+        ]);
     }
 
-    public function store(Request $request, StoreProjectAction $storeProjectAction)
+    public function store(ProjectRequest $request, StoreProjectAction $storeProjectAction)
     {
         $storeProjectAction->run($request->all());
 
         return redirect()->route('project.index')->with('flash_message', 'Project added!');
     }
 
-    public function edit($id, FetchProjectAction $fetchProjectAction)
+    public function edit($id, FetchProjectAction $fetchProjectAction, GetAllTagsAction $getAllTagsAction)
     {
         return view('admin.projects.edit')->with([
-            "project" => $fetchProjectAction->run($id)
+            "project" => $fetchProjectAction->run($id),
+            "tags" => $getAllTagsAction->run()
         ]);
     }
 
-    public function update(Request $request, $id, UpdateProjectAction $updateProjectAction)
+    public function update(ProjectRequest $request, $id, UpdateProjectAction $updateProjectAction)
     {
         $updateProjectAction->run($request->all(), $id);
 

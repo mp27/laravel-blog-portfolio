@@ -67,5 +67,6 @@ Route::middleware(['auth'])->prefix('/admin')->group(function () {
         Route::patch('/{id}', 'ProjectsController@update')->name('project.update');
         Route::get('/{id}', 'ProjectsController@show')->name('project.show');
         Route::delete('/{id}', 'ProjectsController@destroy')->name('project.delete');
+        Route::delete('/project-image-delete/{projectImage}', 'ProjectImageController@destroy')->name('projectImage.delete');
     });
 });

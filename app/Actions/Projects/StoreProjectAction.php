@@ -8,12 +8,23 @@ use App\Project;
 
 class StoreProjectAction
 {
-    public function __construct()
+    protected $attachProjectImagesAction;
+
+    public function __construct(AttachProjectImagesAction $attachProjectImagesAction)
     {
+        $this->attachProjectImagesAction = $attachProjectImagesAction;
     }
 
     public function run($requestData)
     {
-        return Project::create($requestData);
+        $project = Project::create($requestData);
+
+        $project->tags()->sync($requestData['tags']);
+
+        if (!empty($requestData['images'])) {
+            $this->attachProjectImagesAction->run($project->id, $requestData['images']);
+        }
+        
+        return $project;
     }
 }

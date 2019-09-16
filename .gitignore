@@ -12,3 +12,4 @@ yarn-error.log
 .idea/
 /public/thumbnails
 /public/images
+/public/projects
