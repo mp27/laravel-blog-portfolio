@@ -14,7 +14,7 @@ class GetAllProjectsAction
 
     public function run()
     {
-        return Project::all();
+        return Project::with('images', 'tags')->get();
     }
 
 }
