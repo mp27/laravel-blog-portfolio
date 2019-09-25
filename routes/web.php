@@ -24,6 +24,7 @@ Route::get('/portfolio', 'PublicProjectsController@index')->name('public.project
 
 Route::get('/posts', 'PublicPostsController@index')->name('public.posts');
 Route::get('/posts/{postSlug}', 'PublicPostsController@show')->name('public.post.show');
+Route::post('/subscribe', 'SubscribersController@store')->name('public.subscriber.store');
 
 Route::middleware(['auth'])->prefix('/admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('dashboard');
@@ -70,5 +71,9 @@ Route::middleware(['auth'])->prefix('/admin')->group(function () {
         Route::get('/{id}', 'ProjectsController@show')->name('project.show');
         Route::delete('/{id}', 'ProjectsController@destroy')->name('project.delete');
         Route::delete('/project-image-delete/{projectImage}', 'ProjectImageController@destroy')->name('projectImage.delete');
+    });
+
+    Route::group(["prefix" => 'subscribers'], function () {
+        Route::get('/', 'SubscribersController@index')->name('subscriber.index');
     });
 });

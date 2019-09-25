@@ -12,6 +12,7 @@
             <div class="row">
                 <div class="col-md-8">
                     {!! $post->content !!}
+                    @include('includes.subscriber-form')
                 </div>
                 <div class="col-md-4">
                     @foreach($similarPosts as $similarPost)

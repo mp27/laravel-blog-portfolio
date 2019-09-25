@@ -87,6 +87,9 @@
                 <li>
                     <a href="{{route('project.index')}}">Projects</a>
                 </li>
+                <li>
+                    <a href="{{route('subscriber.index')}}">Subscribers</a>
+                </li>
             </ul>
         </div>
         <main class="py-4 flex-grow-1">

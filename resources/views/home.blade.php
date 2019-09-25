@@ -9,5 +9,6 @@
                 </div>
             @endforeach
         </div>
+        @include('includes.subscriber-form')
     </div>
 @endsection
