@@ -13,6 +13,6 @@ class GetActiveSubscribers
     }
 
     public function run() {
-        return Subscriber::where('subscribed', true)->get();
+        return Subscriber::subscribed()->get();
     }
 }
