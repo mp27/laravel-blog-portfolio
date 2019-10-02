@@ -2,10 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Actions\Subscribers\GetActiveSubscribers;
-use App\Mail\WeeklySummary;
+use App\Actions\Subscribers\SendWeeklySummaryAction;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
 
 class SendSummary extends Command
 {
@@ -38,12 +36,8 @@ class SendSummary extends Command
      *
      * @return mixed
      */
-    public function handle(GetActiveSubscribers $getActiveSubscribers)
+    public function handle(SendWeeklySummaryAction $sendWeeklySummaryAction)
     {
-        $subscribers = $getActiveSubscribers->run();
-
-        foreach ($subscribers as $subscriber) {
-            Mail::to($subscriber)->send(new WeeklySummary($subscriber));
-        }
+        $sendWeeklySummaryAction->run();
     }
 }

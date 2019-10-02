@@ -12,15 +12,17 @@ class WeeklySummary extends Mailable
     use Queueable, SerializesModels;
 
     public $subscriber;
+    public $posts;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Subscriber $subscriber)
+    public function __construct(Subscriber $subscriber, $posts)
     {
         $this->subscriber = $subscriber;
+        $this->posts = $posts;
     }
 
     /**
