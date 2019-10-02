@@ -5,6 +5,7 @@ namespace App\Actions\Posts;
 
 
 use App\Post;
+use Illuminate\Support\Facades\Cache;
 
 class GetPublicPostBySlug
 {
@@ -13,6 +14,8 @@ class GetPublicPostBySlug
     }
 
     public function run($slug) {
-        return Post::where('slug', $slug)->published()->firstOrFail();
+        return Cache::remember("singlePost-{$slug}", 60 * 60 * 24, function () use ($slug) {
+            return Post::where('slug', $slug)->published()->firstOrFail();
+        });
     }
 }

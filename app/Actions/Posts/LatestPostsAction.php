@@ -5,6 +5,7 @@ namespace App\Actions\Posts;
 
 
 use App\Post;
+use Illuminate\Support\Facades\Cache;
 
 class LatestPostsAction
 {
@@ -14,6 +15,8 @@ class LatestPostsAction
 
     public function run($limit = 5)
     {
-        return Post::latest()->published()->take($limit)->get();
+        return Cache::remember('latestPosts', 60 * 60 * 24, function () use ($limit) {
+            return Post::latest()->published()->take($limit)->get();
+        });
     }
 }

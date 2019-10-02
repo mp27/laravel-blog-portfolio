@@ -4,7 +4,9 @@
 namespace App\Actions\Projects;
 
 
+use App\Post;
 use App\Project;
+use Illuminate\Support\Facades\Cache;
 
 class GetAllProjectsAction
 {
@@ -14,7 +16,9 @@ class GetAllProjectsAction
 
     public function run()
     {
-        return Project::with('images', 'tags')->get();
+        return Cache::remember('projectsListing', 60 * 60 * 24 * 30, function () {
+            return Project::with('images', 'tags')->get();
+        });
     }
 
 }
