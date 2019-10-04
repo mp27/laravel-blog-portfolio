@@ -13,8 +13,20 @@ class GetAllSubscribersAction
     {
     }
 
-    public function run($perPage = 20)
+    public function run($request, $perPage = 20)
     {
-        return Subscriber::latest()->paginate($perPage);
+        $subscribers =  Subscriber::latest();
+
+        if (!empty($request->active)) {
+            if ($request->active == 'true') {
+                $subscribers = $subscribers->subscribed();
+            } else {
+                $subscribers = $subscribers->subscribed(false);
+            }
+        }
+
+        $subscribers = $subscribers->paginate($perPage);
+
+        return $subscribers;
     }
 }

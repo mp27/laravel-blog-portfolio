@@ -9,8 +9,8 @@ class Subscriber extends Model
     protected $table = 'subscribers';
     protected $fillable = ['name', 'email'];
 
-    public function scopeSubscribed($query)
+    public function scopeSubscribed($query, $flag = true)
     {
-        return $query->where('subscribed', true);
+        return $query->where('subscribed', $flag);
     }
 }

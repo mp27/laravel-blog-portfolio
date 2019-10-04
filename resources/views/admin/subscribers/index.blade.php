@@ -20,7 +20,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($subscribers as $item)
+                                @forelse($subscribers as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->name }}</td>
@@ -31,7 +31,11 @@
                                             {{$item->subscribed ? 'Yes': 'No'}}
                                         </td>
                                     </tr>
-                                @endforeach
+                                    @empty
+                                    <tr>
+                                        <td><h4>No subscribers</h4></td>
+                                    </tr>
+                                @endforelse
                                 </tbody>
                             </table>
                             <div
