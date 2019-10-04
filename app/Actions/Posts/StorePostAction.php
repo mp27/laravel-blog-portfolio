@@ -6,6 +6,7 @@ namespace App\Actions\Posts;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class StorePostAction
 {
@@ -21,6 +22,10 @@ class StorePostAction
         $requestData = $this->preparePostAction->run($request);
         $post = Post::create($requestData);
         $post->tags()->sync($request->tags);
+
+        if ($post->published) {
+            Cache::forget('latestPosts');
+        }
 
         return $post;
     }

@@ -4,6 +4,8 @@
 namespace App\Actions\Projects;
 
 
+use Illuminate\Support\Facades\Cache;
+
 class UpdateProjectAction
 {
     protected $fetchProjectAction;
@@ -26,6 +28,8 @@ class UpdateProjectAction
         if (!empty($requestData['images'])) {
             $this->attachProjectImagesAction->run($id, $requestData['images']);
         }
+
+        Cache::forget('projectsListing');
 
         return $project;
     }

@@ -5,6 +5,7 @@ namespace App\Actions\Posts;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class UpdatePostAction
 {
@@ -23,6 +24,8 @@ class UpdatePostAction
         $post = $this->fetchPostAction->run($id);
         $post->update($requestData);
         $post->tags()->sync($request->tags);
+
+        Cache::forget("singlePost-{$post->slug}");
 
         return $post;
     }

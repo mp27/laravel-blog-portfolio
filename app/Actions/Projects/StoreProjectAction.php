@@ -5,6 +5,7 @@ namespace App\Actions\Projects;
 
 
 use App\Project;
+use Illuminate\Support\Facades\Cache;
 
 class StoreProjectAction
 {
@@ -24,7 +25,9 @@ class StoreProjectAction
         if (!empty($requestData['images'])) {
             $this->attachProjectImagesAction->run($project->id, $requestData['images']);
         }
-        
+
+        Cache::forget('projectsListing');
+
         return $project;
     }
 }
