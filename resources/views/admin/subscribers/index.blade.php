@@ -7,6 +7,14 @@
                 <div class="card">
                     <div class="card-header">Subscribers</div>
                     <div class="card-body">
+                        <form action="{{route('subscriber.index')}}">
+                            <select class="form-control" name="active">
+                                <option value="" @if(empty(request('active'))) selected @endif>All</option>
+                                <option value="true" @if(request('active') == 'true') selected @endif>Subscribed</option>
+                                <option value="false" @if(!empty(request('active')) && request('active') != 'true') selected @endif>Unsubscribed</option>
+                            </select>
+                            <button type="submit" class="btn btn-dark mt-3">Filter</button>
+                        </form>
                         <br/>
                         <br/>
                         <div class="table-responsive">
