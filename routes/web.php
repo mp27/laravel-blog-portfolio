@@ -25,6 +25,7 @@ Route::get('/portfolio', 'PublicProjectsController@index')->name('public.project
 Route::get('/posts', 'PublicPostsController@index')->name('public.posts');
 Route::get('/posts/{postSlug}', 'PublicPostsController@show')->name('public.post.show');
 Route::post('/subscribe', 'SubscribersController@store')->name('public.subscriber.store');
+Route::get('/unsubscribe', 'SubscribersController@destroy')->name('public.subscriber.destroy');
 
 Route::middleware(['auth'])->prefix('/admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('dashboard');

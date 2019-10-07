@@ -5,3 +5,5 @@
         <h3><a href="{{route('public.post.show', $post->slug)}}">{{$post->title}}</a></h3>
     </div>
 @endforeach
+
+<a href="{{route('public.subscriber.destroy', ['token' => $subscriber->token])}}">Unsubscribe</a>
