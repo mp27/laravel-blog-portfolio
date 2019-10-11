@@ -4,7 +4,10 @@
 namespace App\Actions\Subscribers;
 
 
+use App\Mail\SubscribeConfirmation;
+use App\Mail\WeeklySummary;
 use App\Subscriber;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class StoreSubscriberAction
@@ -16,15 +19,16 @@ class StoreSubscriberAction
     public function run($request)
     {
         $request['token'] = Str::random(16);
+        $request['subscribed'] = 0;
 
         $existingSubscriber = Subscriber::where('email', $request['email'])->first();
 
         if (!$existingSubscriber) {
-            return Subscriber::create($request);
+            $existingSubscriber = Subscriber::create($request);
         }
 
-        $existingSubscriber->subscribed = 1;
+        Mail::to($existingSubscriber)->queue(new SubscribeConfirmation($existingSubscriber));
 
-        return $existingSubscriber->save();
+        return $existingSubscriber;
     }
 }

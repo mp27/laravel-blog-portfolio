@@ -26,6 +26,7 @@ Route::get('/posts', 'PublicPostsController@index')->name('public.posts');
 Route::get('/posts/{postSlug}', 'PublicPostsController@show')->name('public.post.show');
 Route::post('/subscribe', 'SubscribersController@store')->name('public.subscriber.store');
 Route::get('/unsubscribe', 'SubscribersController@destroy')->name('public.subscriber.destroy');
+Route::get('/subscribe-confirmation', 'SubscribersController@update')->name('public.subscriber.update');
 
 Route::middleware(['auth'])->prefix('/admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('dashboard');

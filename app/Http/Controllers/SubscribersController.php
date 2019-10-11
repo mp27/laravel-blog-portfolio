@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Subscribers\GetAllSubscribersAction;
 use App\Actions\Subscribers\StoreSubscriberAction;
 use App\Actions\Subscribers\UnsubscribeAction;
+use App\Actions\Subscribers\UpdateSubscriberAction;
 use App\Http\Requests\SubscriberRequest;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,17 @@ class SubscribersController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Request $request, UnsubscribeAction $unsubscribeAction) {
+    public function update(Request $request, UpdateSubscriberAction $updateSubscriberAction)
+    {
+        if (!empty($request->email) && !empty($request->token)) {
+            $updateSubscriberAction->run($request->all());
+        }
+
+        return redirect()->route('home');
+    }
+
+    public function destroy(Request $request, UnsubscribeAction $unsubscribeAction)
+    {
 
         $unsubscribeAction->run($request->token);
 
