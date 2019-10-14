@@ -31,15 +31,17 @@
     {!! $errors->first('images', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="row">
-    @foreach($project->images as $image)
-        <div class="col-md-4 mb-3">
-            <img src="{{asset($image->src)}}" alt="">
-            <button class="btn btn-danger delete-image" data-url="{{route('projectImage.delete', $image->id)}}">X
-            </button>
-        </div>
-    @endforeach
-</div>
+@if(isset($project))
+    <div class="row">
+        @foreach($project->images as $image)
+            <div class="col-md-4 mb-3">
+                <img src="{{asset($image->src)}}" alt="">
+                <button class="btn btn-danger delete-image" data-url="{{route('projectImage.delete', $image->id)}}">X
+                </button>
+            </div>
+        @endforeach
+    </div>
+@endif
 
 <div class="form-group">
     <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">

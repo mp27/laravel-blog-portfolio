@@ -1,0 +1,25 @@
+.main-bg-color {
+    background: #333;
+}
+
+input.blog-input {
+    height: 60px;
+    background: #333 !important;
+    border: 0;
+    font-size: 1.2rem;
+}
+
+.submit-button {
+    width: 100%;
+    height: 60px;
+    font-size: 1.2rem;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.card-header {
+    font-size: 2rem;
+    color: #fff;
+}

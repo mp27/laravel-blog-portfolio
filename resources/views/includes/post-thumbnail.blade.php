@@ -1,9 +1,9 @@
 <a href="{{route('public.post.show', $post->slug)}}" class="mb-3 d-block">
-    <div class="card">
+    <div class="card bg-dark">
         <div class="card-header">{{$post->title}}</div>
-        <div class="card-body">
-            <p><strong>Category: {{$post->category->name}}</strong></p>
-            <img src="{{asset($post->thumbnail)}}" alt="{{$post->title}}">
+        <div class="card-body p-0">
+            <span class="badge badge-primary m-2">{{$post->category->name}}</span>
+            <img src="{{asset($post->thumbnail)}}" alt="{{$post->title}}" class="w-100 d-block">
         </div>
     </div>
 </a>

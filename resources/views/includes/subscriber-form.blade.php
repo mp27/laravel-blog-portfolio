@@ -11,14 +11,14 @@
             @endif
         </div>
         <div class="form-group col-md-4">
-            <input type="text" placeholder="Name" name="name" class="form-control">
+            <input type="text" placeholder="Name" name="name" class="form-control blog-input">
         </div>
         <div class="form-group col-md-4">
-            <input type="email" placeholder="email" name="email" class="form-control">
+            <input type="email" placeholder="email" name="email" class="form-control blog-input">
         </div>
 
         <div class="form-group col-md-4">
-            <button type="submit" class="btn btn-light">SUBSCRIBE</button>
+            <button type="submit" class="btn btn-dark main-bg-color submit-button">SUBSCRIBE</button>
         </div>
     </div>
 </form>

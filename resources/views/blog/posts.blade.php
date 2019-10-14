@@ -5,7 +5,7 @@
         <div class="row mb-5">
             <div class="col-md-12">
                 <form action="{{route('public.posts')}}" method="GET">
-                    <input type="text" placeholder="Search" name="search" class="form-control" value="{{request('search')}}">
+                    <input type="text" placeholder="Search" name="search" class="form-control blog-input" value="{{request('search')}}">
                 </form>
             </div>
         </div>

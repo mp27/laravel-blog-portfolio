@@ -3,8 +3,8 @@
 @section('content')
     <div class="container text-white">
         @foreach($projects as $project)
-            <div class="bg-dark">
-                <h2 class="text-center mt-3 mb-3">{{$project->name}}</h2>
+            <div class="bg-dark pt-3">
+                <h2 class="text-center mb-3">{{$project->name}}</h2>
                 <div class="row">
                     <div class="col-md-6">
                         @if(count($project->images))
