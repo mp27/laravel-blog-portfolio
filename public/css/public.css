@@ -19,7 +19,46 @@ a {
     text-decoration: none !important;
 }
 
+a.nav-link {
+    font-size: 1.4rem;
+}
+
 .card-header {
     font-size: 2rem;
     color: #fff;
+}
+
+.back-to-top {
+    font-size: 40px;
+    background: #333;
+    color: #fff;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+    display: none;
+    padding: 10px 20px;
+}
+
+.back-to-top span {
+    line-height: 1;
+}
+
+.back-to-top:hover {
+    background-color: #23272b;
+}
+
+.back-to-top.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.thumbnail-card-link {
+    border: 1px solid transparent;
+}
+
+.thumbnail-card-link:hover {
+    border-color: #23272b;
 }

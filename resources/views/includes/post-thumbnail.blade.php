@@ -1,4 +1,4 @@
-<a href="{{route('public.post.show', $post->slug)}}" class="mb-3 d-block">
+<a href="{{route('public.post.show', $post->slug)}}" class="mb-3 d-block thumbnail-card-link">
     <div class="card bg-dark">
         <div class="card-header">{{$post->title}}</div>
         <div class="card-body p-0">

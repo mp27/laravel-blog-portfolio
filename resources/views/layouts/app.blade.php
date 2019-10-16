@@ -11,8 +11,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -24,7 +22,7 @@
     <link href="{{ asset('css/public.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div>
         <nav class="navbar navbar-dark navbar-expand-md shadow-sm main-bg-color">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -39,13 +37,15 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
+                        @php
+                            $routeName = \Request::route()->getName();
+                        @endphp
+                        <li class="nav-item @if($routeName === 'public.posts') active @endif ">
                             <a class="nav-link" href="{{ route('public.posts') }}">{{ __('Blog') }}</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item @if($routeName === 'public.projects') active @endif ">
                             <a class="nav-link" href="{{ route('public.projects') }}">{{ __('Projects') }}</a>
                         </li>
                     </ul>
@@ -56,6 +56,31 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <div class="back-to-top">
+            <span>^</span>
+        </div>
     </div>
+
+    <script src="{{ asset('js/app.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.back-to-top').on('click', function (event) {
+                event.preventDefault();
+                $("html, body").animate({scrollTop: 0}, 500);
+            });
+
+            $(window).scroll(function () {
+                var scrollTop = $(document).scrollTop();
+
+                if (scrollTop > 500) {
+                    $('.back-to-top').addClass('active');
+                } else {
+                    $('.back-to-top').removeClass('active');
+                }
+            })
+        });
+    </script>
 </body>
 </html>
