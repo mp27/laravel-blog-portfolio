@@ -48,6 +48,9 @@
                         <li class="nav-item @if($routeName === 'public.projects') active @endif ">
                             <a class="nav-link" href="{{ route('public.projects') }}">{{ __('Projects') }}</a>
                         </li>
+                        <li class="nav-item @if($routeName === 'contact.index') active @endif ">
+                            <a class="nav-link" href="{{ route('contact.index') }}">{{ __('Contact us') }}</a>
+                        </li>
                     </ul>
                 </div>
             </div>
