@@ -20,6 +20,9 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/contact-us', 'ContactController@index')->name('contact.index');
+Route::post('/contact-us', 'ContactController@store')->name('contact.store');
+
 Route::get('/portfolio', 'PublicProjectsController@index')->name('public.projects');
 
 Route::get('/posts', 'PublicPostsController@index')->name('public.posts');
