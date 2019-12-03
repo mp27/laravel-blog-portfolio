@@ -17,6 +17,9 @@ YouTube CHANNEL: [ProgrammingWithPeter](https://youtube.com/programmingwithpeter
 - On deploy, you need to configure a cronjob for schedules and `php artisan queue:work` command to run on background
 - Have fun!
 
+## DB Schema
+![DB Schema](./portofolio-schema.png)
+
 ## License
 
 This project is under [MIT license](https://opensource.org/licenses/MIT).
